@@ -2,7 +2,16 @@ class LinearAlgebra {
 
     //troca linha por coluna
     transpose(a) {
-        let c = new Matrix(a.cols, a.rows)
+        let c;
+        if(a instanceof Vector){
+            c = new Vector(a.rows)
+            c.rows = a.cols;
+            c.cols = a.rows;
+            for(let i = 1;i <= c.size;i++){
+                c.set(i,a.get(i))
+            }
+        }else if(a instanceof Matrix){
+           c = new Matrix(a.cols, a.rows)
 
         for (let i = 1; i <= c.rows; i++) {
             for (let j = 1; j <= c.cols; j++) {
@@ -10,6 +19,10 @@ class LinearAlgebra {
                 c.set(i, j, a.get(j, i))
             }
         }
+    }else{
+        "o parametro deve ser um objeto do tipo vetor ou matriz"
+    }
+        
         return c
 
     }

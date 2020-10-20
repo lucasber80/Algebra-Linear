@@ -1,33 +1,24 @@
-class Vector{
+class Vector extends Matrix{
 
-    constructor( dim, values){ 
-        this.values = values;
-       
-        
-        if(values == undefined){
-            this.values = [dim]
-            for( var i = 0; i < this.i;i++){
-                this.values.push(0)
-            }
-        }else{
-            if(values.length == i){
-                this.values = values
-            }else{
-                throw "A quantidade de elementos é incompativel com o tamanho do vetor"
-            }
-
-            
-        }
-
+    constructor(dim,values){
+        super(dim,1,values);
+        this.size = dim;
     }
 
     get(i){
-        return this.values[i]
-    }
-    
-     set(i,values){
-        this.values[i] = values;
+        if(this.rows >= this.cols){
+            return super.get(i,1);
+        }else{
+            return super.get(1,i)
+        }
     }
 
+    set(i,value){
+        if(this.rows >= this.cols){
+            super.set(i,1,value)
+        }else{
+            super.set(1,i,value)
+        }
+    }
 
 }
