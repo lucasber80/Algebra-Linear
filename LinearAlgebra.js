@@ -248,7 +248,7 @@ class LinearAlgebra {
 
     }
 
-    determinante(matriz){
+    det(matriz){
         if(matriz.cols != matriz.rows) throw "matriz precisa ser quadrada"
 
         let c = new Matrix(matriz.rows, matriz.cols, matriz.values.slice())
@@ -275,10 +275,10 @@ class LinearAlgebra {
          det *= c.get(i,i);
         }
 
-        console.log(det);
+        return det;
     }
 
-    inversa(matriz){
+    inverse(matriz){
         if(matriz.cols != matriz.rows) throw "matriz precisa ser quadrada"
 
         let c = this.juntarMatriz(matriz)
@@ -315,9 +315,20 @@ class LinearAlgebra {
         }
  
         
- 
+        let d = new Matrix(matriz.rows,matriz.cols)
        
-        return c;
+        for(let i = c.cols/2 + 1;i <= c.cols;i++){
+            
+            
+            for(let j = 1;j <= c.rows;j++){
+                    
+                    d.set(j,i - d.cols,c.get(j,i))
+                    
+                }
+               
+            }
+
+        return d;
 
     }
     
