@@ -3,26 +3,26 @@ class LinearAlgebra {
     //troca linha por coluna
     transpose(a) {
         let c;
-        if(a instanceof Vector){
+        if (a instanceof Vector) {
             c = new Vector(a.rows)
             c.rows = a.cols;
             c.cols = a.rows;
-            for(let i = 1;i <= c.size;i++){
-                c.set(i,a.get(i))
+            for (let i = 1; i <= c.size; i++) {
+                c.set(i, a.get(i))
             }
-        }else if(a instanceof Matrix){
-           c = new Matrix(a.cols, a.rows)
+        } else if (a instanceof Matrix) {
+            c = new Matrix(a.cols, a.rows)
 
-        for (let i = 1; i <= c.rows; i++) {
-            for (let j = 1; j <= c.cols; j++) {
+            for (let i = 1; i <= c.rows; i++) {
+                for (let j = 1; j <= c.cols; j++) {
 
-                c.set(i, j, a.get(j, i))
+                    c.set(i, j, a.get(j, i))
+                }
             }
+        } else {
+            "o parametro deve ser um objeto do tipo vetor ou matriz"
         }
-    }else{
-        "o parametro deve ser um objeto do tipo vetor ou matriz"
-    }
-        
+
         return c
 
     }
@@ -100,7 +100,7 @@ class LinearAlgebra {
     //troca linhas
     trocarLinha(matriz, linha1, linha2) {
 
-        
+
 
         for (let i = 1; i <= matriz.cols; i++) {
             var aux = matriz.get(linha1, i);
@@ -108,7 +108,7 @@ class LinearAlgebra {
             matriz.set(linha2, i, aux);
         }
 
-       
+
     }
 
     // multiplica linha1 por uma constante k e soma com a linha2
@@ -133,15 +133,15 @@ class LinearAlgebra {
         for (let j = 1; j <= matriz.cols - 2; j++) {
             for (let i = j + 1; i <= matriz.rows; i++) {
 
-                if(matriz.get(j, j) == 0){
-                    this.trocarLinha(matriz,j,i);
-                }else{
-                    this.naoSei(matriz, j, i, this.k(matriz.get(j, j),matriz.get(i, j)));
+                if (matriz.get(j, j) == 0) {
+                    this.trocarLinha(matriz, j, i);
+                } else {
+                    this.naoSei(matriz, j, i, this.k(matriz.get(j, j), matriz.get(i, j)));
                 }
 
-             }
-            
-         }
+            }
+
+        }
     }
 
 
@@ -159,10 +159,10 @@ class LinearAlgebra {
     trianguloSuperior(matriz) {
         for (let j = matriz.cols - 1; j >= 2; j--) {
             for (let i = j - 1; i >= 1; i--) {
-                if(matriz.get(j, j) == 0){
-                    this.trocarLinha(matriz,j,i);
-                }else{
-                    this.naoSei(matriz, j, i, this.k(matriz.get(j, j),matriz.get(i, j)));
+                if (matriz.get(j, j) == 0) {
+                    this.trocarLinha(matriz, j, i);
+                } else {
+                    this.naoSei(matriz, j, i, this.k(matriz.get(j, j), matriz.get(i, j)));
                 }
             }
 
@@ -176,7 +176,7 @@ class LinearAlgebra {
             this.multOneRowVoid(matriz, i, 1 / matriz.get(i, i))
         }
 
-       
+
     }
 
 
@@ -248,62 +248,62 @@ class LinearAlgebra {
 
     }
 
-    det(matriz){
-        if(matriz.cols != matriz.rows) throw "matriz precisa ser quadrada"
+    det(matriz) {
+        if (matriz.cols != matriz.rows) throw "matriz precisa ser quadrada"
 
         let c = new Matrix(matriz.rows, matriz.cols, matriz.values.slice())
 
         let det = 1;
-        
+
         //zerar triangular inferior
         for (let j = 1; j <= c.rows; j++) {
             for (let i = j + 1; i <= c.rows; i++) {
 
-                if(c.get(j, j) == 0){
-                    this.trocarLinha(c,j,i);
+                if (c.get(j, j) == 0) {
+                    this.trocarLinha(c, j, i);
                     det *= -1;
-                }else{
-                    this.naoSei(c, j, i, this.k(c.get(j, j),c.get(i, j)));
+                } else {
+                    this.naoSei(c, j, i, this.k(c.get(j, j), c.get(i, j)));
                 }
 
-             }
-            
-         }
+            }
+
+        }
 
         //multiplica a diagonal
-        for(let i = 1;i <= c.cols;i++){
-         det *= c.get(i,i);
+        for (let i = 1; i <= c.cols; i++) {
+            det *= c.get(i, i);
         }
 
         return det;
     }
 
-    inverse(matriz){
-        if(matriz.cols != matriz.rows) throw "matriz precisa ser quadrada"
+    inverse(matriz) {
+        if (matriz.cols != matriz.rows) throw "matriz precisa ser quadrada"
 
         let c = this.juntarMatriz(matriz)
-        
+
         //triangulo inferior
-         for (let j = 1; j <= c.cols/2 - 1; j++) {
+        for (let j = 1; j <= c.cols / 2 - 1; j++) {
             for (let i = j + 1; i <= c.rows; i++) {
 
-                if(c.get(j, j) == 0){
-                    this.trocarLinha(c,j,i);
-                }else{
-                    this.naoSei(c, j, i, this.k(c.get(j, j),c.get(i, j)));
+                if (c.get(j, j) == 0) {
+                    this.trocarLinha(c, j, i);
+                } else {
+                    this.naoSei(c, j, i, this.k(c.get(j, j), c.get(i, j)));
                 }
 
-             }
-            
-         }
+            }
 
-         //triangular superior
-         for (let j = c.cols/2 ; j >= 2; j--) {
+        }
+
+        //triangular superior
+        for (let j = c.cols / 2; j >= 2; j--) {
             for (let i = j - 1; i >= 1; i--) {
-                if(c.get(j, j) == 0){
-                    this.trocarLinha(c,j,i);
-                }else{
-                    this.naoSei(c, j, i, this.k(c.get(j, j),c.get(i, j)));
+                if (c.get(j, j) == 0) {
+                    this.trocarLinha(c, j, i);
+                } else {
+                    this.naoSei(c, j, i, this.k(c.get(j, j), c.get(i, j)));
                 }
             }
 
@@ -313,43 +313,43 @@ class LinearAlgebra {
         for (var i = 1; i <= c.rows; i++) {
             this.multOneRowVoid(c, i, 1 / c.get(i, i))
         }
- 
-        
-        let d = new Matrix(matriz.rows,matriz.cols)
-       
-        for(let i = c.cols/2 + 1;i <= c.cols;i++){
-            
-            
-            for(let j = 1;j <= c.rows;j++){
-                    
-                    d.set(j,i - d.cols,c.get(j,i))
-                    
-                }
-               
+
+
+        let d = new Matrix(matriz.rows, matriz.cols)
+
+        for (let i = c.cols / 2 + 1; i <= c.cols; i++) {
+
+
+            for (let j = 1; j <= c.rows; j++) {
+
+                d.set(j, i - d.cols, c.get(j, i))
+
             }
+
+        }
 
         return d;
 
     }
-    
+
     //junta a matriz com sua matriz indentidade
-    juntarMatriz(matriz){
-        let c = new Matrix(matriz.rows, matriz.cols*2,)
+    juntarMatriz(matriz) {
+        let c = new Matrix(matriz.rows, matriz.cols * 2,)
 
-        for(let i = 1;i <= c.cols/2;i++){
-            for(let j = 1;j <= c.rows;j++){
+        for (let i = 1; i <= c.cols / 2; i++) {
+            for (let j = 1; j <= c.rows; j++) {
 
-                    c.set(j,i,matriz.get(j,i))
+                c.set(j, i, matriz.get(j, i))
+            }
+        }
+
+        for (let i = c.cols / 2 + 1; i <= c.cols; i++) {
+            for (let j = 1; j <= c.rows; j++) {
+                if (i - c.cols / 2 == j) {
+                    c.set(j, i, 1)
                 }
             }
-
-            for(let i = c.cols/2 + 1;i <= c.cols;i++){
-                for(let j = 1;j <= c.rows;j++){
-                        if(i - c.cols/2  == j){
-                            c.set(j,i,1)
-                        }
-                    }
-                }
+        }
 
         return c;
 
