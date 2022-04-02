@@ -1,2 +1,2 @@
 # Algebra-Linear
- algoritimo de resolução de matrizes 
+ Construção de uma biblioteca gráfica, utilizando p5Js e algebra linear
